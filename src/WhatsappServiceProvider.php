@@ -2,9 +2,11 @@
 
 namespace FahriGunadi\Whatsapp;
 
+use FahriGunadi\Whatsapp\Commands\WhatsappCommand;
+use FahriGunadi\Whatsapp\Contracts\WhatsappInterface;
+use FahriGunadi\WhatsApp\Drivers\AldinokemalWhatsapp;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use FahriGunadi\Whatsapp\Commands\WhatsappCommand;
 
 class WhatsappServiceProvider extends PackageServiceProvider
 {
@@ -16,10 +18,21 @@ class WhatsappServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('wa-sdk')
+            ->name('whatsapp')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_wa_sdk_table')
             ->hasCommand(WhatsappCommand::class);
+    }
+
+    public function register()
+    {
+        $this->app->singleton(WhatsappInterface::class, fn () => match (config('whatsapp.driver')) {
+            'aldinokemal' => new AldinokemalWhatsapp,
+            default => new AldinokemalWhatsapp,
+        });
+
+        $this->app->alias(WhatsappInterface::class, 'whatsapp');
+
+        return parent::register();
     }
 }

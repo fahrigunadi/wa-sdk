@@ -2,9 +2,9 @@
 
 namespace FahriGunadi\Whatsapp\Tests;
 
+use FahriGunadi\Whatsapp\WhatsappServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use FahriGunadi\Whatsapp\WhatsappServiceProvider;
 
 class TestCase extends Orchestra
 {

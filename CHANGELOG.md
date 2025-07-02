@@ -1,3 +1,3 @@
 # Changelog
 
-All notable changes to `wa-sdk` will be documented in this file.
+All notable changes to `whatsapp` will be documented in this file.

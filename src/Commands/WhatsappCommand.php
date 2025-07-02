@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 
 class WhatsappCommand extends Command
 {
-    public $signature = 'wa-sdk';
+    public $signature = 'whatsapp';
 
     public $description = 'My command';
 

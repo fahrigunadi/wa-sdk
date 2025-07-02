@@ -1,12 +1,12 @@
 {
-    "name": "fahrigunadi/wa-sdk",
-    "description": "This is my package wa-sdk",
+    "name": "fahrigunadi/whatsapp",
+    "description": "This is my package whatsapp",
     "keywords": [
         "Fahri Gunadi",
         "laravel",
-        "wa-sdk"
+        "whatsapp"
     ],
-    "homepage": "https://github.com/fahrigunadi/wa-sdk",
+    "homepage": "https://github.com/fahrigunadi/whatsapp",
     "license": "MIT",
     "authors": [
         {
@@ -35,9 +35,11 @@
     },
     "autoload": {
         "psr-4": {
-            "FahriGunadi\\Whatsapp\\": "src/",
-            "FahriGunadi\\Whatsapp\\Database\\Factories\\": "database/factories/"
-        }
+            "FahriGunadi\\Whatsapp\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
