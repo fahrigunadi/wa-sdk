@@ -33,6 +33,6 @@ class WhatsappServiceProvider extends PackageServiceProvider
 
         $this->app->alias(WhatsappInterface::class, 'whatsapp');
 
-        return parent::register();
+        parent::register();
     }
 }

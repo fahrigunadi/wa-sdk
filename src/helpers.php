@@ -1,8 +1,10 @@
 <?php
 
+use FahriGunadi\Whatsapp\Contracts\WhatsappInterface;
+
 if (! function_exists('whatsapp')) {
-    function whatsapp(): \FahriGunadi\WhatsApp\Contracts\WhatsappInterface
+    function whatsapp(): WhatsappInterface
     {
-        return app(\FahriGunadi\Whatsapp\Contracts\WhatsappInterface::class);
+        return app(WhatsappInterface::class);
     }
 }
