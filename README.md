@@ -1,19 +1,9 @@
-# This is my package whatsapp
+# whatsapp
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/fahrigunadi/whatsapp.svg?style=flat-square)](https://packagist.org/packages/fahrigunadi/whatsapp)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fahrigunadi/whatsapp/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fahrigunadi/whatsapp/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/fahrigunadi/whatsapp/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/fahrigunadi/whatsapp/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/fahrigunadi/whatsapp.svg?style=flat-square)](https://packagist.org/packages/fahrigunadi/whatsapp)
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/whatsapp.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/whatsapp)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
 ## Installation
 
@@ -21,13 +11,6 @@ You can install the package via composer:
 
 ```bash
 composer require fahrigunadi/whatsapp
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="whatsapp-migrations"
-php artisan migrate
 ```
 
 You can publish the config file with:
@@ -40,20 +23,69 @@ This is the contents of the published config file:
 
 ```php
 return [
+    /**
+     * --------------------------------------------------------------------------
+     * WhatsApp Driver
+     * --------------------------------------------------------------------------
+     *
+     * This option defines which driver implementation to use for sending
+     * WhatsApp messages. You may configure your own custom driver or use
+     * one of the available drivers such as 'aldinokemal', etc.
+     *
+     * Supported: "aldinokemal"
+     */
+    'driver' => env('WHATSAPP_DRIVER', 'aldinokemal'),
+
+    /**
+     * --------------------------------------------------------------------------
+     * WhatsApp Username
+     * --------------------------------------------------------------------------
+     *
+     * The username used to authenticate with the selected WhatsApp provider.
+     * This value is typically provided by the API service you are integrating with.
+     */
+    'username' => env('WHATSAPP_USERNAME'),
+
+    /**
+     * --------------------------------------------------------------------------
+     * WhatsApp Password or Token
+     * --------------------------------------------------------------------------
+     *
+     * The password or access token required to authenticate with the provider.
+     * This credential should be kept secure and never exposed publicly.
+     */
+    'password' => env('WHATSAPP_PASSWORD'),
+
+    /**
+     * --------------------------------------------------------------------------
+     * WhatsApp Base URL
+     * --------------------------------------------------------------------------
+     *
+     * The base endpoint URL for the WhatsApp API. This is where all requests
+     * will be sent. Make sure the URL is correct and includes the necessary
+     * protocol (http or https).
+     */
+    'base_url' => env('WHATSAPP_BASE_URL'),
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="whatsapp-views"
 ```
 
 ## Usage
 
 ```php
-$whatsapp = new FahriGunadi\Whatsapp();
-echo $whatsapp->echoPhrase('Hello, FahriGunadi!');
+whatsapp()
+    ->to('+628XXXXXXXXXX')
+    ->message('Hello World')
+    ->send();
+
+whatsapp()
+    ->to('+628XXXXXXXXXX')
+    ->image('https://files.f-g.my.id/images/dummy/botol-2.jpg')
+    ->send();
+
+\FahriGunadi\Whatsapp\Whatsapp::to('+628XXXXXXXXXX')
+    ->image('https://files.f-g.my.id/images/dummy/botol-2.jpg')
+    ->message('Image Caption')
+    ->send();
 ```
 
 ## Testing
