@@ -1,22 +1,22 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "fahrigunadi/wa-sdk",
+    "description": "This is my package wa-sdk",
     "keywords": [
-        ":vendor_name",
+        "Fahri Gunadi",
         "laravel",
-        ":package_slug"
+        "wa-sdk"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/fahrigunadi/wa-sdk",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Fahri Gunadi",
+            "email": "fahri@fahrigunadi.dev",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.2",
         "spatie/laravel-package-tools": "^1.16",
         "illuminate/contracts": "^10.0||^11.0||^12.0"
     },
@@ -35,13 +35,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "FahriGunadi\\Whatsapp\\": "src/",
+            "FahriGunadi\\Whatsapp\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "FahriGunadi\\Whatsapp\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -63,10 +63,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "FahriGunadi\\Whatsapp\\WhatsappServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "Whatsapp": "FahriGunadi\\Whatsapp\\Facades\\Whatsapp"
             }
         }
     },

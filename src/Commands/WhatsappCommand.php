@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace FahriGunadi\Whatsapp\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class WhatsappCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'wa-sdk';
 
     public $description = 'My command';
 
