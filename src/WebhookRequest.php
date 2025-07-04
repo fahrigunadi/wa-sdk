@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FahriGunadi\Whatsapp;
 
+use FahriGunadi\Whatsapp\Contracts\WhatsappInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -131,5 +132,13 @@ class WebhookRequest extends FormRequest
     public function document(): ?string
     {
         return whatsapp()->webhookDocument();
+    }
+
+    /**
+     * Get the reply instance for replying to the sender.
+     */
+    public function reply(): WhatsappInterface
+    {
+        return whatsapp()->to($this->chat())->replyMessage($this->messageId());
     }
 }

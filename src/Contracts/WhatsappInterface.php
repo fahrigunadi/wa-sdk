@@ -24,6 +24,13 @@ interface WhatsappInterface
     public function to(string $phone): static;
 
     /**
+     * Set the target message Id for the WhatsApp message.
+     *
+     * @param  string  $messageId  The target message Id.
+     */
+    public function replyMessage(string $messageId): static;
+
+    /**
      * Set the text message to be sent.
      *
      * @param  string  $message  The message content.

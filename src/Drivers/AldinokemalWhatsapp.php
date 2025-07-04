@@ -20,6 +20,8 @@ class AldinokemalWhatsapp implements WhatsappInterface
 
     private ?string $to = null;
 
+    private ?string $replyMessageId = null;
+
     private ?string $message = null;
 
     private ?string $image = null;
@@ -27,6 +29,13 @@ class AldinokemalWhatsapp implements WhatsappInterface
     public function to(string $phone): static
     {
         $this->to = $phone;
+
+        return $this;
+    }
+
+    public function replyMessage(string $messageId): static
+    {
+        $this->replyMessageId = $messageId;
 
         return $this;
     }
@@ -69,16 +78,20 @@ class AldinokemalWhatsapp implements WhatsappInterface
 
     public function send(): Response
     {
+        $this->validateData();
+
         if ($this->image) {
             return $this->request()->post('/send/image', [
                 'phone' => $this->to,
                 'caption' => $this->message,
+                'reply_message_id' => $this->replyMessageId,
                 'image_url' => str($this->image)->isUrl() ? $this->image : Storage::url($this->image),
             ]);
         }
 
         return $this->request()->post('/send/message', [
             'phone' => $this->to,
+            'reply_message_id' => $this->replyMessageId,
             'message' => $this->message,
         ]);
     }
@@ -240,10 +253,8 @@ class AldinokemalWhatsapp implements WhatsappInterface
 
     protected function validateData()
     {
-        throw_if(! $this->message && ! $this->image, new Exception('Message or Image must be set'));
-
         throw_unless($this->to, new Exception('Target must be set'));
 
-        throw_unless($this->hasValidPhone($this->to), new Exception('Target is invalid'));
+        throw_if(! $this->message && ! $this->image, new Exception('Message or Image must be set'));
     }
 }
