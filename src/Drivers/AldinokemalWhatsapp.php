@@ -6,6 +6,7 @@ namespace FahriGunadi\WhatsApp\Drivers;
 
 use Exception;
 use FahriGunadi\Whatsapp\Contracts\WhatsappInterface;
+use FahriGunadi\Whatsapp\Traits\Logging;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
 
 class AldinokemalWhatsapp implements WhatsappInterface
 {
+    use Logging;
+
     private ?string $to = null;
 
     private ?string $message = null;

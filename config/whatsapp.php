@@ -52,4 +52,42 @@ return [
      * protocol (http or https).
      */
     'base_url' => env('WHATSAPP_BASE_URL'),
+
+    /**
+     * --------------------------------------------------------------------------
+     * WhatsApp Log Channel
+     * --------------------------------------------------------------------------
+     *
+     * This is the logging channel used for general WhatsApp-related activities,
+     * such as sending messages, formatting content, or other internal operations.
+     *
+     * You can override this by setting the environment variable:
+     * WHATSAPP_LOG_CHANNEL=custom-channel-name
+     *
+     * Default: 'whatsapp'
+     *
+     * @example 'stack', 'daily', 'slack', etc.
+     *
+     * @see https://laravel.com/docs/logging#available-channel-drivers
+     */
+    'log_channel' => env('WHATSAPP_LOG_CHANNEL', 'whatsapp'),
+
+    /**
+     * --------------------------------------------------------------------------
+     * WhatsApp Webhook Log Channel
+     * --------------------------------------------------------------------------
+     *
+     * This logging channel is used specifically for logging incoming
+     * WhatsApp webhook requests, payloads, and related data.
+     *
+     * You can override this by setting the environment variable:
+     * WHATSAPP_WEBHOOK_LOG_CHANNEL=custom-webhook-channel
+     *
+     * Default: 'whatsapp-webhook'
+     *
+     * @example 'single', 'daily', 'papertrail', etc.
+     *
+     * @see https://laravel.com/docs/logging#available-channel-drivers
+     */
+    'webhook_log_channel' => env('WHATSAPP_WEBHOOK_LOG_CHANNEL', 'whatsapp-webhook'),
 ];

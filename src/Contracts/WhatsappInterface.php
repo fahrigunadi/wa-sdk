@@ -7,6 +7,7 @@ namespace FahriGunadi\Whatsapp\Contracts;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Stringable;
 
 /**
  * Interface WhatsappInterface
@@ -124,4 +125,22 @@ interface WhatsappInterface
      * @return bool True if valid, false otherwise.
      */
     public function hasValidPhone(string $phone): bool;
+
+    /**
+     * Write a general log message to the configured WhatsApp log channel.
+     *
+     * @param  string|Stringable  $message  The log message content.
+     * @param  string  $level  The log level (e.g. 'info', 'error', 'debug'). Default is 'info'.
+     *                         Must be one of: 'emergency', 'alert', 'critical', 'error',
+     *                         'warning', 'notice', 'info', or 'debug'.
+     */
+    public function log(string|Stringable $message, string $level = 'info'): void;
+
+    /**
+     * Write a webhook-specific log message to the configured webhook log channel.
+     *
+     * @param  string|Stringable  $message  The webhook log message.
+     * @param  string  $level  The log level (e.g. 'info', 'error', 'debug'). Default is 'info'.
+     */
+    public function webhookLog(string|Stringable $message, string $level = 'info'): void;
 }
