@@ -12,6 +12,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use InvalidArgumentException;
 
 class AldinokemalWhatsapp implements WhatsappInterface
 {
@@ -221,15 +222,15 @@ class AldinokemalWhatsapp implements WhatsappInterface
 
     public function formatPhone(string $phone): string
     {
-        throw_if(! $phone, new Exception('Phone number must be set'));
+        throw_if(! $phone, new InvalidArgumentException('Phone number must be set'));
 
-        $phone = str_replace([' ', '-', '(', ')', '+'], '', $phone);
+        $phone = str($phone)
+            ->replace([' ', '-', '(', ')', '+'], '')
+            ->trim()
+            ->whenContains('@s.whatsapp.net', fn ($p) => $p->before('@s.whatsapp.net'))
+            ->whenStartsWith('08', fn ($p) => $p->substr(1)->prepend('62'));
 
-        if (str_starts_with($phone, '08')) {
-            return '62'.substr($phone, 1);
-        }
-
-        return $phone;
+        return $phone->toString();
     }
 
     public function hasValidPhone(string $phone): bool
