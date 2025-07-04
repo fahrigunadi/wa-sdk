@@ -14,13 +14,33 @@ use Illuminate\Foundation\Http\FormRequest;
 class WebhookRequest extends FormRequest
 {
     /**
-     * Get the message body from the WhatsApp webhook.
+     * Get the message text from the WhatsApp webhook.
      *
-     * @return string|null The message body, or null if not available.
+     * @return string|null The message text, or null if not available.
      */
-    public function messageBody(): ?string
+    public function messageText(): ?string
     {
-        return whatsapp()->webhookMessage();
+        return whatsapp()->webhookMessageText();
+    }
+
+    /**
+     * Get the message id from the WhatsApp webhook.
+     *
+     * @return string|null The message id, or null if not available.
+     */
+    public function messageId(): ?string
+    {
+        return whatsapp()->webhookMessageId();
+    }
+
+    /**
+     * Get the pushname from the WhatsApp webhook.
+     *
+     * @return string|null The pushname, or null if not available.
+     */
+    public function pushname(): ?string
+    {
+        return whatsapp()->webhookPushname();
     }
 
     /**

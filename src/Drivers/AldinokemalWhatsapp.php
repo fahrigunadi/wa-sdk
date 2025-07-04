@@ -126,7 +126,7 @@ class AldinokemalWhatsapp implements WhatsappInterface
         return str(request()->from)->afterLast(' ')->toString();
     }
 
-    public function webhookMessage(): ?string
+    public function webhookMessageText(): ?string
     {
         if ($this->webhookIsImage()) {
             return request()->image['caption'] ?? null;
@@ -139,9 +139,19 @@ class AldinokemalWhatsapp implements WhatsappInterface
         return request()->message['text'] ?? null;
     }
 
+    public function webhookMessageId(): ?string
+    {
+        return request()->message['id'] ?? null;
+    }
+
     public function webhookMessageTimestamp(): ?string
     {
         return request()->timestamp;
+    }
+
+    public function webhookPushname(): ?string
+    {
+        return request()->pushname;
     }
 
     public function webhookIsGroup(): bool

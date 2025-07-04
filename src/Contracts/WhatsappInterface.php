@@ -66,19 +66,29 @@ interface WhatsappInterface
     public function webhookChat(): string;
 
     /**
-     * Retrieve the message content from the webhook payload.
+     * Retrieve the message text from the webhook payload.
      */
-    public function webhookMessage(): ?string;
+    public function webhookMessageText(): ?string;
 
     /**
-     * Determine if the webhook message was sent in a group chat.
+     * Retrieve the message id from the webhook payload.
      */
-    public function webhookIsGroup(): bool;
+    public function webhookMessageId(): ?string;
 
     /**
      * Get the message timestamp from the webhook payload.
      */
     public function webhookMessageTimestamp(): ?string;
+
+    /**
+     * Get the message timestamp from the webhook payload.
+     */
+    public function webhookPushname(): ?string;
+
+    /**
+     * Determine if the webhook message was sent in a group chat.
+     */
+    public function webhookIsGroup(): bool;
 
     /**
      * Determine if the webhook message contains an image.
