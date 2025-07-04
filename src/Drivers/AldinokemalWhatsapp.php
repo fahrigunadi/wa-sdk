@@ -47,11 +47,11 @@ class AldinokemalWhatsapp implements WhatsappInterface
         $password = config('whatsapp.password');
         $baseUrl = config('whatsapp.base_url');
 
-        throw_unless($username, new Exception('Username is required'));
+        throw_unless($username, new Exception('Config whatsapp.username must be set'));
 
-        throw_unless($password, new Exception('Password is required'));
+        throw_unless($password, new Exception('Config whatsapp.password must be set'));
 
-        throw_unless($baseUrl, new Exception('Base url is required'));
+        throw_unless($baseUrl, new Exception('Config whatsapp.base_url must be set'));
 
         return Http::withBasicAuth($username, $password)
             ->withHeaders([
@@ -125,7 +125,20 @@ class AldinokemalWhatsapp implements WhatsappInterface
 
     public function webhookMessage(): ?string
     {
+        if ($this->webhookIsImage()) {
+            return request()->image['caption'] ?? null;
+        }
+
+        if ($this->webhookIsDocument()) {
+            return request()->document['caption'] ?? null;
+        }
+
         return request()->message['text'] ?? null;
+    }
+
+    public function webhookMessageTimestamp(): ?string
+    {
+        return request()->timestamp;
     }
 
     public function webhookIsGroup(): bool
@@ -135,9 +148,67 @@ class AldinokemalWhatsapp implements WhatsappInterface
         return (bool) preg_match('/^[\w\d\-]+@g\.us$/', $chat);
     }
 
+    public function webhookIsImage(): bool
+    {
+        return request()->has('image');
+    }
+
+    public function webhookImageMimeType(): ?string
+    {
+        $mimeType = request()->image['mime_type'] ?? null;
+
+        if (! $mimeType) {
+            return null;
+        }
+
+        return str_replace('\/', '/', $mimeType);
+    }
+
+    public function webhookImage(): ?string
+    {
+        $mediaPath = request()->image['media_path'] ?? null;
+
+        if (! $mediaPath) {
+            return null;
+        }
+
+        $mediaPath = str_replace('\/', '/', $mediaPath);
+
+        return sprintf('%s/%s', config('whatsapp.base_url'), $mediaPath);
+    }
+
+    public function webhookIsDocument(): bool
+    {
+        return request()->has('document');
+    }
+
+    public function webhookDocumentMimeType(): ?string
+    {
+        $mimeType = request()->document['mime_type'] ?? null;
+
+        if (! $mimeType) {
+            return null;
+        }
+
+        return str_replace('\/', '/', $mimeType);
+    }
+
+    public function webhookDocument(): ?string
+    {
+        $mediaPath = request()->document['media_path'] ?? null;
+
+        if (! $mediaPath) {
+            return null;
+        }
+
+        $mediaPath = str_replace('\/', '/', $mediaPath);
+
+        return sprintf('%s/%s', config('whatsapp.base_url'), $mediaPath);
+    }
+
     public function formatPhone(string $phone): string
     {
-        throw_if(! $phone, new Exception('Phone number is required'));
+        throw_if(! $phone, new Exception('Phone number must be set'));
 
         $phone = str_replace([' ', '-', '(', ')', '+'], '', $phone);
 
@@ -155,9 +226,9 @@ class AldinokemalWhatsapp implements WhatsappInterface
 
     protected function validateData()
     {
-        throw_if(! $this->message && ! $this->image, new Exception('Message or image is required'));
+        throw_if(! $this->message && ! $this->image, new Exception('Message or Image must be set'));
 
-        throw_unless($this->to, new Exception('Target is required'));
+        throw_unless($this->to, new Exception('Target must be set'));
 
         throw_unless($this->hasValidPhone($this->to), new Exception('Target is invalid'));
     }

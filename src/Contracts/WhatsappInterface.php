@@ -1,70 +1,127 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FahriGunadi\Whatsapp\Contracts;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 
+/**
+ * Interface WhatsappInterface
+ *
+ * Defines the contract for interacting with a WhatsApp service provider.
+ */
 interface WhatsappInterface
 {
     /**
-     * Set phone number
+     * Set the target phone number for the WhatsApp message.
+     *
+     * @param  string  $phone  The target phone number (e.g., '628123456789').
      */
     public function to(string $phone): static;
 
     /**
-     * Set message
+     * Set the text message to be sent.
+     *
+     * @param  string  $message  The message content.
      */
     public function message(string $message): static;
 
     /**
-     * Set image
+     * Set the image to be sent.
+     *
+     * @param  string  $image  The image URL or path.
      */
     public function image(string $image): static;
 
     /**
-     * Setup request instance
+     * Prepare the HTTP client request instance.
      */
     public function request(): PendingRequest;
 
     /**
-     * Send message
+     * Send the WhatsApp message.
      */
     public function send(): Response;
 
     /**
-     * Format Collection to whatapp table
+     * Format a collection of items into a WhatsApp-friendly text table.
+     *
+     * @param  Collection  $items  The data collection.
+     * @param  array  $columns  Array of column keys to include.
      */
     public function formatTable(Collection $items, array $columns): string;
 
     /**
-     * Get webhook sender
+     * Retrieve the sender's WhatsApp number from the webhook payload.
      */
     public function webhookSender(): string;
 
     /**
-     * Get webhook chat
+     * Retrieve the chat ID or group ID from the webhook payload.
      */
     public function webhookChat(): string;
 
     /**
-     * Get webhook message
+     * Retrieve the message content from the webhook payload.
      */
     public function webhookMessage(): ?string;
 
     /**
-     * Get webhook is group
+     * Determine if the webhook message was sent in a group chat.
      */
     public function webhookIsGroup(): bool;
 
     /**
-     * Format phone number
+     * Get the message timestamp from the webhook payload.
+     */
+    public function webhookMessageTimestamp(): ?string;
+
+    /**
+     * Determine if the webhook message contains an image.
+     */
+    public function webhookIsImage(): bool;
+
+    /**
+     * Get the MIME type of the image in the webhook payload.
+     */
+    public function webhookImageMimeType(): ?string;
+
+    /**
+     * Get the image URL from the webhook payload.
+     */
+    public function webhookImage(): ?string;
+
+    /**
+     * Determine if the webhook message contains a document.
+     */
+    public function webhookIsDocument(): bool;
+
+    /**
+     * Get the MIME type of the document in the webhook payload.
+     */
+    public function webhookDocumentMimeType(): ?string;
+
+    /**
+     * Get the document URL from the webhook payload.
+     */
+    public function webhookDocument(): ?string;
+
+    /**
+     * Format a phone number to comply with WhatsApp format.
+     *
+     * @param  string  $phone  Raw phone number input.
+     * @return string Formatted phone number (e.g., '628123456789').
      */
     public function formatPhone(string $phone): string;
 
     /**
-     * Check if phone number is valid
+     * Validate if the given phone number is a valid WhatsApp number.
+     *
+     * @param  string  $phone  Phone number to validate.
+     * @return bool True if valid, false otherwise.
      */
     public function hasValidPhone(string $phone): bool;
 }
