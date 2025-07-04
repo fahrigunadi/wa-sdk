@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace FahriGunadi\Whatsapp;
 
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class WebhookRequest
  *
  * Custom request class that provides helper methods to access WhatsApp webhook data.
  */
-class WebhookRequest extends Request
+class WebhookRequest extends FormRequest
 {
     /**
      * Get the message body from the WhatsApp webhook.
