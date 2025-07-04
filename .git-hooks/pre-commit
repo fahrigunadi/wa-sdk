@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "⏳ Running Laravel Pint (dry-run)..."
+./vendor/bin/pint --test
+
+if [ $? -ne 0 ]; then
+    echo "❌ Pint test failed. Please fix the code style before committing."
+    echo "   You can run 'composer format' to automatically fix the issues."
+    exit 1
+fi
+
+echo "✅ Pint passed."

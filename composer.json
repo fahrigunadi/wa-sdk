@@ -53,7 +53,17 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/pint",
+        "post-install-cmd": [
+            "@setup-git-hooks"
+        ],
+        "post-update-cmd": [
+            "@setup-git-hooks"
+        ],
+        "setup-git-hooks": [
+            "php -r \"copy('.git-hooks/pre-commit', '.git/hooks/pre-commit');\"",
+            "php -r \"chmod('.git/hooks/pre-commit', 0755);\""
+        ]
     },
     "config": {
         "sort-packages": true,
