@@ -160,4 +160,9 @@ interface WhatsappInterface
      * @param  string  $level  The log level (e.g. 'info', 'error', 'debug'). Default is 'info'.
      */
     public function webhookLog(string|Stringable $message, string $level = 'info'): void;
+
+    /**
+     * Retrieve a list of the user's WhatsApp groups.
+     */
+    public function getMyGroups(): Collection;
 }

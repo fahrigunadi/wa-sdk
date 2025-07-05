@@ -257,4 +257,11 @@ class AldinokemalWhatsapp implements WhatsappInterface
 
         throw_if(! $this->message && ! $this->image, new Exception('Message or Image must be set'));
     }
+
+    public function getMyGroups(): Collection
+    {
+        $response = $this->request()->get('/user/my/groups');
+
+        return collect($response->collect('results')->get('data'));
+    }
 }
