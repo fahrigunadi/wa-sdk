@@ -241,6 +241,7 @@ class AldinokemalWhatsapp implements WhatsappInterface
             ->replace([' ', '-', '(', ')', '+'], '')
             ->trim()
             ->whenContains('@s.whatsapp.net', fn ($p) => $p->before('@s.whatsapp.net'))
+            ->whenContains(':', fn ($p) => $p->before(':'))
             ->whenStartsWith('08', fn ($p) => $p->substr(1)->prepend('62'));
 
         return $phone->toString();
