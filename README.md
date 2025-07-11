@@ -86,6 +86,24 @@ whatsapp()
     ->image('https://files.f-g.my.id/images/dummy/botol-2.jpg')
     ->message('Image Caption')
     ->send();
+
+// handle webhook in controller
+public function webhook(\FahriGunadi\Whatsapp\WebhookRequest $request)
+{
+    // get webhook sender
+    $sender = $request->sender();
+
+    // get webhook message text
+    $text = $request->messageText();
+
+    // get webhook chat room
+    $room = $request->chat();
+
+    // reply webhook message
+    $request->reply()->message("Hello $sender, you said: $text")->send();
+
+    // ....
+}
 ```
 
 ## Testing
