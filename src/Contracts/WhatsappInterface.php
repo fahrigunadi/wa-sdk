@@ -27,8 +27,9 @@ interface WhatsappInterface
      * Set the target message Id for the WhatsApp message.
      *
      * @param  string  $messageId  The target message Id.
+     * @param  string|null  $participant  The participant to reply to, implemented by driver wuzapi.
      */
-    public function replyMessage(string $messageId): static;
+    public function replyMessage(string $messageId, ?string $participant = null): static;
 
     /**
      * Set the text message to be sent.

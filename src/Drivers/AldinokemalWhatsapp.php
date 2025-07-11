@@ -6,18 +6,14 @@ namespace FahriGunadi\WhatsApp\Drivers;
 
 use Exception;
 use FahriGunadi\Whatsapp\Contracts\WhatsappInterface;
-use FahriGunadi\Whatsapp\Traits\Logging;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use InvalidArgumentException;
 
-class AldinokemalWhatsapp implements WhatsappInterface
+class AldinokemalWhatsapp extends Whatsapp implements WhatsappInterface
 {
-    use Logging;
-
     private ?string $to = null;
 
     private ?string $replyMessageId = null;
@@ -33,7 +29,7 @@ class AldinokemalWhatsapp implements WhatsappInterface
         return $this;
     }
 
-    public function replyMessage(string $messageId): static
+    public function replyMessage(string $messageId, ?string $participant = null): static
     {
         $this->replyMessageId = $messageId;
 
@@ -94,40 +90,6 @@ class AldinokemalWhatsapp implements WhatsappInterface
             'reply_message_id' => $this->replyMessageId,
             'message' => $this->message,
         ]);
-    }
-
-    public function formatTable(Collection $items, array $columns): string
-    {
-        $maxLengths = [];
-        foreach ($columns as $field => $header) {
-            $maxFromValues = $items->max(fn ($item) => strlen((string) data_get($item, $field)));
-            $maxLengths[$field] = max(strlen($header), $maxFromValues);
-        }
-
-        $lines = [];
-
-        $headerLine = '';
-        foreach ($columns as $field => $header) {
-            $headerLine .= str_pad($header, $maxLengths[$field]).' | ';
-        }
-        $lines[] = rtrim($headerLine, ' | ');
-
-        $separatorLine = '';
-        foreach ($columns as $field => $_) {
-            $separatorLine .= str_repeat('-', $maxLengths[$field]).'-|-';
-        }
-        $lines[] = rtrim($separatorLine, '-|-');
-
-        foreach ($items as $item) {
-            $rowLine = '';
-            foreach ($columns as $field => $_) {
-                $value = (string) data_get($item, $field);
-                $rowLine .= str_pad($value, $maxLengths[$field]).' | ';
-            }
-            $lines[] = rtrim($rowLine, ' | ');
-        }
-
-        return "```\n".implode("\n", $lines)."\n```";
     }
 
     public function webhookSender(): string
@@ -231,25 +193,6 @@ class AldinokemalWhatsapp implements WhatsappInterface
         $mediaPath = str_replace('\/', '/', $mediaPath);
 
         return sprintf('%s/%s', config('whatsapp.base_url'), $mediaPath);
-    }
-
-    public function formatPhone(string $phone): string
-    {
-        throw_if(! $phone, new InvalidArgumentException('Phone number must be set'));
-
-        $phone = str($phone)
-            ->replace([' ', '-', '(', ')', '+'], '')
-            ->trim()
-            ->whenContains('@s.whatsapp.net', fn ($p) => $p->before('@s.whatsapp.net'))
-            ->whenContains(':', fn ($p) => $p->before(':'))
-            ->whenStartsWith('08', fn ($p) => $p->substr(1)->prepend('62'));
-
-        return $phone->toString();
-    }
-
-    public function hasValidPhone(string $phone): bool
-    {
-        return (bool) preg_match('/^(\+62|62|0)8[1-9][0-9]{6,9}$/', $phone);
     }
 
     protected function validateData()

@@ -16,9 +16,9 @@ return [
      *
      * This option defines which driver implementation to use for sending
      * WhatsApp messages. You may configure your own custom driver or use
-     * one of the available drivers such as 'aldinokemal', etc.
+     * one of the available drivers such as 'aldinokemal', 'wuzapi', etc.
      *
-     * Supported: "aldinokemal"
+     * Supported: "aldinokemal" or "wuzapi"
      */
     'driver' => env('WHATSAPP_DRIVER', 'aldinokemal'),
 
