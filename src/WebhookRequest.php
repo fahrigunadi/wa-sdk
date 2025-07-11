@@ -139,6 +139,6 @@ class WebhookRequest extends FormRequest
      */
     public function reply(): WhatsappInterface
     {
-        return whatsapp()->to($this->chat())->replyMessage($this->messageId());
+        return whatsapp()->to($this->chat())->replyMessage($this->messageId(), $this->sender());
     }
 }
