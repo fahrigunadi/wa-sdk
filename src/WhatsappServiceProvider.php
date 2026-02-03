@@ -4,6 +4,7 @@ namespace FahriGunadi\Whatsapp;
 
 use FahriGunadi\Whatsapp\Commands\WhatsappCommand;
 use FahriGunadi\Whatsapp\Contracts\WhatsappInterface;
+use FahriGunadi\WhatsApp\Drivers\AldinokemalV8Whatsapp;
 use FahriGunadi\WhatsApp\Drivers\AldinokemalWhatsapp;
 use FahriGunadi\WhatsApp\Drivers\WuzapiWhatsapp;
 use Spatie\LaravelPackageTools\Package;
@@ -28,6 +29,7 @@ class WhatsappServiceProvider extends PackageServiceProvider
     public function register(): void
     {
         $this->app->singleton(WhatsappInterface::class, fn () => match (config('whatsapp.driver')) {
+            'aldinokemal_v8' => new AldinokemalV8Whatsapp,
             'aldinokemal' => new AldinokemalWhatsapp,
             'wuzapi' => new WuzapiWhatsapp,
             default => new AldinokemalWhatsapp,
