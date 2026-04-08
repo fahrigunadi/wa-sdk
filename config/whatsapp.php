@@ -18,7 +18,7 @@ return [
      * WhatsApp messages. You may configure your own custom driver or use
      * one of the available drivers such as 'aldinokemal', 'wuzapi', etc.
      *
-     * Supported: "aldinokemal" or "wuzapi"
+     * Supported: "aldinokemal", "aldinokemal_v8", "wuzapi"
      */
     'driver' => env('WHATSAPP_DRIVER', 'aldinokemal'),
 
