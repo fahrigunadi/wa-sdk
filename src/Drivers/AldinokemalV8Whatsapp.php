@@ -110,7 +110,7 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
 
     public function webhookChat(): string
     {
-        return str(request()->json('payload.chat'))->afterLast(' ')->toString();
+        return str(request()->json('payload.chat_id'))->afterLast(' ')->toString();
     }
 
     public function webhookMessageText(): ?string
