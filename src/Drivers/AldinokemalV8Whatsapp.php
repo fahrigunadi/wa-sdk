@@ -116,7 +116,7 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
     public function webhookMessageText(): ?string
     {
         if ($this->webhookIsImage()) {
-            return request()->json('payload.caption');
+            return request()->json('payload.image.caption');
         }
 
         if ($this->webhookIsDocument()) {
@@ -166,7 +166,11 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
             return null;
         }
 
-        $mediaPath = str_replace('\/', '/', $mediaPath);
+        if ($path = request()->json('payload.image.path')) {
+            $mediaPath = str_replace('\/', '/', $path);
+        } else {
+            $mediaPath = str_replace('\/', '/', $mediaPath);
+        }
 
         return sprintf('%s/%s', config('whatsapp.base_url'), $mediaPath);
     }
