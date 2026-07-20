@@ -78,6 +78,29 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
         return $this;
     }
 
+    public function revokeMessage(string $messageId, string $phone): Response
+    {
+        return $this->request()->post("/message/{$messageId}/revoke", [
+            'phone' => $phone,
+        ]);
+    }
+
+    public function reactMessage(string $messageId, string $phone, string $emoji): Response
+    {
+        return $this->request()->post("/message/{$messageId}/reaction", [
+            'phone' => $phone,
+            'emoji' => $emoji,
+        ]);
+    }
+
+    public function updateMessage(string $messageId, string $phone, string $message): Response
+    {
+        return $this->request()->post("/message/{$messageId}/update", [
+            'phone' => $phone,
+            'message' => $message,
+        ]);
+    }
+
     public function request(): PendingRequest
     {
         $username = config('whatsapp.username');

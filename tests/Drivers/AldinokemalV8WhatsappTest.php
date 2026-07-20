@@ -191,3 +191,51 @@ describe('AldinokemalV8Whatsapp::send() text', function () {
         });
     });
 });
+
+describe('AldinokemalV8Whatsapp message manipulation', function () {
+    it('posts to /message/{message_id}/revoke with the phone', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->revokeMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/revoke'
+                && $request['phone'] === '6289685028129@s.whatsapp.net';
+        });
+    });
+
+    it('posts to /message/{message_id}/reaction with the phone and emoji', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->reactMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net',
+            '🙏'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/reaction'
+                && $request['phone'] === '6289685028129@s.whatsapp.net'
+                && $request['emoji'] === '🙏';
+        });
+    });
+
+    it('posts to /message/{message_id}/update with the phone and new message', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->updateMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net',
+            'edited text'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/update'
+                && $request['phone'] === '6289685028129@s.whatsapp.net'
+                && $request['message'] === 'edited text';
+        });
+    });
+});
