@@ -135,7 +135,11 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
                 'phone' => $this->to,
                 'caption' => $this->message,
                 'reply_message_id' => $this->replyMessageId,
+                'view_once' => $this->viewOnce,
                 'image_url' => $this->resolveMediaUrl($this->image),
+                'compress' => $this->compress,
+                'duration' => $this->duration,
+                'is_forwarded' => $this->isForwarded,
             ]);
         }
 

@@ -122,3 +122,28 @@ describe('AldinokemalV8Whatsapp::send() file', function () {
         Http::assertSent(fn (Request $request) => $request->url() === 'https://gowa.example.com/send/video');
     });
 });
+
+describe('AldinokemalV8Whatsapp::send() image', function () {
+    it('posts to /send/image with the optional flags', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)
+            ->to('6289685028129@s.whatsapp.net')
+            ->image('https://example.com/photo.jpg')
+            ->message('a caption')
+            ->viewOnce()
+            ->compress()
+            ->duration(7776000)
+            ->forwarded()
+            ->send();
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/send/image'
+                && $request['image_url'] === 'https://example.com/photo.jpg'
+                && $request['view_once'] === true
+                && $request['compress'] === true
+                && $request['duration'] === 7776000
+                && $request['is_forwarded'] === true;
+        });
+    });
+});
