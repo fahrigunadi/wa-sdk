@@ -46,6 +46,55 @@ interface WhatsappInterface
     public function image(string $image): static;
 
     /**
+     * Set the file/document to be sent.
+     *
+     * @param  string  $file  The file URL or storage path.
+     */
+    public function file(string $file): static;
+
+    /**
+     * Set the video to be sent.
+     *
+     * @param  string  $video  The video URL or storage path.
+     */
+    public function video(string $video): static;
+
+    /**
+     * Mark the outgoing message as forwarded.
+     *
+     * @param  bool  $forwarded  Whether the message should be flagged as forwarded. Default true.
+     */
+    public function forwarded(bool $forwarded = true): static;
+
+    /**
+     * Set the disappearing message duration.
+     *
+     * @param  int  $seconds  Duration in seconds. Allowed values: 0 (no expiry), 86400 (24h), 604800 (7d), 7776000 (90d).
+     */
+    public function duration(int $seconds): static;
+
+    /**
+     * Mark the image/video to be sent as view-once.
+     *
+     * @param  bool  $viewOnce  Whether the media should be view-once. Default true.
+     */
+    public function viewOnce(bool $viewOnce = true): static;
+
+    /**
+     * Enable compression for the image/video to be sent.
+     *
+     * @param  bool  $compress  Whether the media should be compressed. Default true.
+     */
+    public function compress(bool $compress = true): static;
+
+    /**
+     * Display the video to be sent as a looping, silent, autoplay GIF.
+     *
+     * @param  bool  $gifPlayback  Whether the video should play back as a GIF. Default true.
+     */
+    public function gifPlayback(bool $gifPlayback = true): static;
+
+    /**
      * Prepare the HTTP client request instance.
      */
     public function request(): PendingRequest;

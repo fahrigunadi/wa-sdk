@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FahriGunadi\Whatsapp\Drivers;
 
+use Exception;
 use FahriGunadi\Whatsapp\Traits\Logging;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -11,6 +12,121 @@ use InvalidArgumentException;
 abstract class Whatsapp
 {
     use Logging;
+
+    protected bool $isForwarded = false;
+
+    protected ?int $duration = null;
+
+    protected bool $viewOnce = false;
+
+    protected bool $compress = false;
+
+    protected bool $gifPlayback = false;
+
+    /**
+     * Set the file/document to be sent.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * sending arbitrary files override this.
+     *
+     * @param  string  $file  The file URL or storage path.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function file(string $file): static
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * Set the video to be sent.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * sending video override this.
+     *
+     * @param  string  $video  The video URL or storage path.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function video(string $video): static
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * Mark the outgoing message as forwarded.
+     *
+     * Stored unconditionally; only read by drivers whose send payload
+     * supports an `is_forwarded` flag.
+     *
+     * @param  bool  $forwarded  Whether the message should be flagged as forwarded. Default true.
+     */
+    public function forwarded(bool $forwarded = true): static
+    {
+        $this->isForwarded = $forwarded;
+
+        return $this;
+    }
+
+    /**
+     * Set the disappearing message duration.
+     *
+     * Stored unconditionally; only read by drivers whose send payload
+     * supports a `duration` field.
+     *
+     * @param  int  $seconds  Duration in seconds.
+     */
+    public function duration(int $seconds): static
+    {
+        $this->duration = $seconds;
+
+        return $this;
+    }
+
+    /**
+     * Mark the image/video to be sent as view-once.
+     *
+     * Stored unconditionally; only read by drivers whose send payload
+     * supports a `view_once` field.
+     *
+     * @param  bool  $viewOnce  Whether the media should be view-once. Default true.
+     */
+    public function viewOnce(bool $viewOnce = true): static
+    {
+        $this->viewOnce = $viewOnce;
+
+        return $this;
+    }
+
+    /**
+     * Enable compression for the image/video to be sent.
+     *
+     * Stored unconditionally; only read by drivers whose send payload
+     * supports a `compress` field.
+     *
+     * @param  bool  $compress  Whether the media should be compressed. Default true.
+     */
+    public function compress(bool $compress = true): static
+    {
+        $this->compress = $compress;
+
+        return $this;
+    }
+
+    /**
+     * Display the video to be sent as a looping, silent, autoplay GIF.
+     *
+     * Stored unconditionally; only read by drivers whose send payload
+     * supports a `gif_playback` field.
+     *
+     * @param  bool  $gifPlayback  Whether the video should play back as a GIF. Default true.
+     */
+    public function gifPlayback(bool $gifPlayback = true): static
+    {
+        $this->gifPlayback = $gifPlayback;
+
+        return $this;
+    }
 
     /**
      * Format the given phone number to WhatsApp standard (starts with 62).
