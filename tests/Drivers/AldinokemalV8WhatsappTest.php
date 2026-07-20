@@ -314,4 +314,65 @@ describe('AldinokemalV8Whatsapp message manipulation', function () {
                 && $request['phone'] === '6289685028129@s.whatsapp.net';
         });
     });
+
+    it('posts to /message/{message_id}/star with the phone', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->starMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/star'
+                && $request['phone'] === '6289685028129@s.whatsapp.net';
+        });
+    });
+
+    it('posts to /message/{message_id}/unstar with the phone', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->unstarMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/unstar'
+                && $request['phone'] === '6289685028129@s.whatsapp.net';
+        });
+    });
+
+    it('posts to /message/{message_id}/forward with the phone and optional fields', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->forwardMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net',
+            86400,
+            true
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/forward'
+                && $request['phone'] === '6289685028129@s.whatsapp.net'
+                && $request['duration'] === 86400
+                && $request['force_reupload'] === true;
+        });
+    });
+
+    it('gets /message/{message_id}/download with the phone as a query parameter', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->downloadMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->method() === 'GET'
+                && str($request->url())->startsWith('https://gowa.example.com/message/3EB089B9D6ADD58153C561/download?')
+                && str($request->url())->contains(rawurlencode('6289685028129@s.whatsapp.net'));
+        });
+    });
 });
