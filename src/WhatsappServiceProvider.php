@@ -4,9 +4,9 @@ namespace FahriGunadi\Whatsapp;
 
 use FahriGunadi\Whatsapp\Commands\WhatsappCommand;
 use FahriGunadi\Whatsapp\Contracts\WhatsappInterface;
-use FahriGunadi\WhatsApp\Drivers\AldinokemalV8Whatsapp;
-use FahriGunadi\WhatsApp\Drivers\AldinokemalWhatsapp;
-use FahriGunadi\WhatsApp\Drivers\WuzapiWhatsapp;
+use FahriGunadi\Whatsapp\Drivers\AldinokemalV8Whatsapp;
+use FahriGunadi\Whatsapp\Drivers\AldinokemalWhatsapp;
+use FahriGunadi\Whatsapp\Drivers\WuzapiWhatsapp;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

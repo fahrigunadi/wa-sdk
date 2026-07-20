@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - `declare(strict_types=1)` at the top of every modified/created PHP source file (already present in all touched files — do not remove).
-- Driver classes are namespaced `FahriGunadi\WhatsApp\Drivers\*` (capital `A` in `WhatsApp`) — match existing casing exactly.
+- Driver classes are namespaced `FahriGunadi\Whatsapp\Drivers\*` (same casing as the rest of the package — `Whatsapp`, not `WhatsApp`; this was fixed as a prerequisite, see the `fix(whatsapp):` commit preceding Task 1).
 - No `dd()`, `dump()`, or `ray()` anywhere in `src/` (enforced by `tests/ArchTest.php`).
 - Laravel Pint runs on every commit via the `.git-hooks/pre-commit` hook (`pint --test`) — code must already be Pint-clean before committing; if the hook fails, run `composer format` and re-stage.
 - New interface methods must be added to `src/Contracts/WhatsappInterface.php` with docblocks matching the existing style (one-line `@param`/`@return`-less summary + `@param` per parameter, no `@return` since return type is in the signature already, matching the file's current convention).
@@ -36,8 +36,8 @@ Create `tests/Drivers/AldinokemalV8WhatsappTest.php`:
 ```php
 <?php
 
-use FahriGunadi\WhatsApp\Drivers\AldinokemalWhatsapp;
-use FahriGunadi\WhatsApp\Drivers\WuzapiWhatsapp;
+use FahriGunadi\Whatsapp\Drivers\AldinokemalWhatsapp;
+use FahriGunadi\Whatsapp\Drivers\WuzapiWhatsapp;
 
 describe('driver base defaults', function () {
     it('throws not implemented for file() on aldinokemal v1', function () {
@@ -72,7 +72,7 @@ describe('driver base defaults', function () {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest tests/Drivers/AldinokemalV8WhatsappTest.php -v`
-Expected: FAIL — `Call to undefined method FahriGunadi\WhatsApp\Drivers\AldinokemalWhatsapp::file()` (or `video()`/`forwarded()`/etc, whichever Pest hits first).
+Expected: FAIL — `Call to undefined method FahriGunadi\Whatsapp\Drivers\AldinokemalWhatsapp::file()` (or `video()`/`forwarded()`/etc, whichever Pest hits first).
 
 - [ ] **Step 3: Add the 7 methods to the interface**
 
@@ -292,7 +292,7 @@ endpoints."
 Append to `tests/Drivers/AldinokemalV8WhatsappTest.php` (after the closing `});` of the `describe('driver base defaults', ...)` block):
 
 ```php
-use FahriGunadi\WhatsApp\Drivers\AldinokemalV8Whatsapp;
+use FahriGunadi\Whatsapp\Drivers\AldinokemalV8Whatsapp;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -350,7 +350,7 @@ describe('AldinokemalV8Whatsapp::send() video', function () {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest tests/Drivers/AldinokemalV8WhatsappTest.php -v`
-Expected: FAIL — `Call to undefined method FahriGunadi\WhatsApp\Drivers\AldinokemalV8Whatsapp::video()` is inherited from base and throws `Exception('Not implemented')`, so the test fails with that exception instead (uncaught `Exception: Not implemented`).
+Expected: FAIL — `Call to undefined method FahriGunadi\Whatsapp\Drivers\AldinokemalV8Whatsapp::video()` is inherited from base and throws `Exception('Not implemented')`, so the test fails with that exception instead (uncaught `Exception: Not implemented`).
 
 - [ ] **Step 3: Implement `video()`, `resolveMediaUrl()`, and the `/send/video` dispatch**
 

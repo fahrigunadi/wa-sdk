@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FahriGunadi\WhatsApp\Drivers;
+namespace FahriGunadi\Whatsapp\Drivers;
 
 use FahriGunadi\Whatsapp\Traits\Logging;
 use Illuminate\Support\Collection;
