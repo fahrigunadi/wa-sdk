@@ -254,4 +254,32 @@ describe('AldinokemalV8Whatsapp message manipulation', function () {
                 && $request['message'] === 'edited text';
         });
     });
+
+    it('posts to /message/{message_id}/delete with the phone', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->deleteMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/delete'
+                && $request['phone'] === '6289685028129@s.whatsapp.net';
+        });
+    });
+
+    it('posts to /message/{message_id}/read with the phone', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)->readMessage(
+            '3EB089B9D6ADD58153C561',
+            '6289685028129@s.whatsapp.net'
+        );
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/message/3EB089B9D6ADD58153C561/read'
+                && $request['phone'] === '6289685028129@s.whatsapp.net';
+        });
+    });
 });
