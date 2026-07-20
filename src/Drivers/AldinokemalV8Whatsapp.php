@@ -25,6 +25,8 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
 
     private ?string $image = null;
 
+    private ?string $video = null;
+
     public function device(string $device): static
     {
         $this->device = $device;
@@ -60,6 +62,13 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
         return $this;
     }
 
+    public function video(string $video): static
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
     public function request(): PendingRequest
     {
         $username = config('whatsapp.username');
@@ -87,12 +96,26 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
     {
         $this->validateData();
 
+        if ($this->video) {
+            return $this->request()->post('/send/video', [
+                'phone' => $this->to,
+                'caption' => $this->message,
+                'reply_message_id' => $this->replyMessageId,
+                'view_once' => $this->viewOnce,
+                'video_url' => $this->resolveMediaUrl($this->video),
+                'compress' => $this->compress,
+                'gif_playback' => $this->gifPlayback,
+                'duration' => $this->duration,
+                'is_forwarded' => $this->isForwarded,
+            ]);
+        }
+
         if ($this->image) {
             return $this->request()->post('/send/image', [
                 'phone' => $this->to,
                 'caption' => $this->message,
                 'reply_message_id' => $this->replyMessageId,
-                'image_url' => str($this->image)->isUrl() ? $this->image : Storage::url($this->image),
+                'image_url' => $this->resolveMediaUrl($this->image),
             ]);
         }
 
@@ -101,6 +124,11 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
             'reply_message_id' => $this->replyMessageId,
             'message' => $this->message,
         ]);
+    }
+
+    private function resolveMediaUrl(string $path): string
+    {
+        return str($path)->isUrl() ? $path : Storage::url($path);
     }
 
     public function webhookSender(): string
@@ -202,7 +230,7 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
     {
         throw_unless($this->to, new Exception('Target must be set'));
 
-        throw_if(! $this->message && ! $this->image, new Exception('Message or Image must be set'));
+        throw_if(! $this->message && ! $this->image && ! $this->video, new Exception('Message or Image must be set'));
     }
 
     public function getMyGroups(): Collection
