@@ -60,6 +60,38 @@ describe('driver base defaults', function () {
         (new WuzapiWhatsapp)->readMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
     })->throws(Exception::class, 'Not implemented');
 
+    it('throws not implemented for starMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->starMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for unstarMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->unstarMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for forwardMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->forwardMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for downloadMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->downloadMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for starMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->starMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for unstarMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->unstarMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for forwardMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->forwardMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for downloadMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->downloadMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
     it('stores optional flags fluently without affecting drivers that do not read them', function () {
         $driver = (new AldinokemalWhatsapp)
             ->forwarded()

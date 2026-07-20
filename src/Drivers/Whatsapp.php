@@ -212,6 +212,72 @@ abstract class Whatsapp
     }
 
     /**
+     * Star (bookmark) a message.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * starring messages override this.
+     *
+     * @param  string  $messageId  The ID of the message to star.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function starMessage(string $messageId, string $phone): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * Unstar (remove bookmark from) a message.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * unstarring messages override this.
+     *
+     * @param  string  $messageId  The ID of the message to unstar.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function unstarMessage(string $messageId, string $phone): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * Forward a message from local chat storage to another chat.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * message forwarding override this.
+     *
+     * @param  string  $messageId  The ID of the message to forward.
+     * @param  string  $phone  The destination phone number or group JID.
+     * @param  int|null  $duration  Optional disappearing message duration override in seconds.
+     * @param  bool  $forceReupload  Skip media reference reuse and re-upload media before sending. Default false.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function forwardMessage(string $messageId, string $phone, ?int $duration = null, bool $forceReupload = false): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * Retrieve the API's saved-location info for a message's downloaded media.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * media download override this.
+     *
+     * @param  string  $messageId  The ID of the message whose media to look up.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function downloadMessage(string $messageId, string $phone): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
      * Format the given phone number to WhatsApp standard (starts with 62).
      *
      * - Removes characters like spaces, dashes, parentheses, and plus sign.

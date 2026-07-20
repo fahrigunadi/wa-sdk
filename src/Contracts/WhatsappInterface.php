@@ -137,6 +137,43 @@ interface WhatsappInterface
     public function readMessage(string $messageId, string $phone): Response;
 
     /**
+     * Star (bookmark) a message.
+     *
+     * @param  string  $messageId  The ID of the message to star.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     */
+    public function starMessage(string $messageId, string $phone): Response;
+
+    /**
+     * Unstar (remove bookmark from) a message.
+     *
+     * @param  string  $messageId  The ID of the message to unstar.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     */
+    public function unstarMessage(string $messageId, string $phone): Response;
+
+    /**
+     * Forward a message from local chat storage to another chat.
+     *
+     * @param  string  $messageId  The ID of the message to forward.
+     * @param  string  $phone  The destination phone number or group JID.
+     * @param  int|null  $duration  Optional disappearing message duration override in seconds (0, 86400, 604800, 7776000).
+     * @param  bool  $forceReupload  Skip media reference reuse and re-upload media before sending. Default false.
+     */
+    public function forwardMessage(string $messageId, string $phone, ?int $duration = null, bool $forceReupload = false): Response;
+
+    /**
+     * Retrieve the API's saved-location info for a message's downloaded media.
+     *
+     * Returns the raw response describing where the media was saved
+     * (file_path/file_url/file_size); it does not fetch the binary itself.
+     *
+     * @param  string  $messageId  The ID of the message whose media to look up.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     */
+    public function downloadMessage(string $messageId, string $phone): Response;
+
+    /**
      * Prepare the HTTP client request instance.
      */
     public function request(): PendingRequest;
