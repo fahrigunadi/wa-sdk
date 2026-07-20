@@ -95,6 +95,32 @@ interface WhatsappInterface
     public function gifPlayback(bool $gifPlayback = true): static;
 
     /**
+     * Revoke (delete for everyone) a previously sent message.
+     *
+     * @param  string  $messageId  The ID of the message to revoke.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     */
+    public function revokeMessage(string $messageId, string $phone): Response;
+
+    /**
+     * React to a message with an emoji.
+     *
+     * @param  string  $messageId  The ID of the message to react to.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     * @param  string  $emoji  The emoji to react with.
+     */
+    public function reactMessage(string $messageId, string $phone, string $emoji): Response;
+
+    /**
+     * Edit the text of a previously sent message.
+     *
+     * @param  string  $messageId  The ID of the message to edit.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     * @param  string  $message  The new message text.
+     */
+    public function updateMessage(string $messageId, string $phone, string $message): Response;
+
+    /**
      * Prepare the HTTP client request instance.
      */
     public function request(): PendingRequest;

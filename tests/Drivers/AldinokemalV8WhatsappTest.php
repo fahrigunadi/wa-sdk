@@ -20,6 +20,30 @@ describe('driver base defaults', function () {
         (new WuzapiWhatsapp)->video('https://example.com/a.mp4');
     })->throws(Exception::class, 'Not implemented');
 
+    it('throws not implemented for revokeMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->revokeMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for reactMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->reactMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', '🙏');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for updateMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->updateMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', 'edited text');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for revokeMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->revokeMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for reactMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->reactMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', '🙏');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for updateMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->updateMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', 'edited text');
+    })->throws(Exception::class, 'Not implemented');
+
     it('stores optional flags fluently without affecting drivers that do not read them', function () {
         $driver = (new AldinokemalWhatsapp)
             ->forwarded()

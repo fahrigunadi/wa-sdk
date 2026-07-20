@@ -6,6 +6,7 @@ namespace FahriGunadi\Whatsapp\Drivers;
 
 use Exception;
 use FahriGunadi\Whatsapp\Traits\Logging;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
@@ -126,6 +127,56 @@ abstract class Whatsapp
         $this->gifPlayback = $gifPlayback;
 
         return $this;
+    }
+
+    /**
+     * Revoke (delete for everyone) a previously sent message.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * message revocation override this.
+     *
+     * @param  string  $messageId  The ID of the message to revoke.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function revokeMessage(string $messageId, string $phone): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * React to a message with an emoji.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * message reactions override this.
+     *
+     * @param  string  $messageId  The ID of the message to react to.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     * @param  string  $emoji  The emoji to react with.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function reactMessage(string $messageId, string $phone, string $emoji): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * Edit the text of a previously sent message.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * message editing override this.
+     *
+     * @param  string  $messageId  The ID of the message to edit.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     * @param  string  $message  The new message text.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function updateMessage(string $messageId, string $phone, string $message): Response
+    {
+        throw new Exception('Not implemented');
     }
 
     /**
