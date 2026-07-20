@@ -85,3 +85,40 @@ describe('AldinokemalV8Whatsapp::send() video', function () {
         Http::assertSent(fn (Request $request) => $request->url() === 'https://gowa.example.com/send/video');
     });
 });
+
+describe('AldinokemalV8Whatsapp::send() file', function () {
+    it('posts to /send/file with an absolute file url', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)
+            ->to('6289685028129@s.whatsapp.net')
+            ->file('https://example.com/document.pdf')
+            ->message('a caption')
+            ->replyMessage('3EB089B9D6ADD58153C561')
+            ->duration(604800)
+            ->forwarded()
+            ->send();
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/send/file'
+                && $request['phone'] === '6289685028129@s.whatsapp.net'
+                && $request['caption'] === 'a caption'
+                && $request['reply_message_id'] === '3EB089B9D6ADD58153C561'
+                && $request['file_url'] === 'https://example.com/document.pdf'
+                && $request['duration'] === 604800
+                && $request['is_forwarded'] === true;
+        });
+    });
+
+    it('prefers video over file when both are set', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)
+            ->to('6289685028129@s.whatsapp.net')
+            ->file('https://example.com/document.pdf')
+            ->video('https://example.com/sample.mp4')
+            ->send();
+
+        Http::assertSent(fn (Request $request) => $request->url() === 'https://gowa.example.com/send/video');
+    });
+});

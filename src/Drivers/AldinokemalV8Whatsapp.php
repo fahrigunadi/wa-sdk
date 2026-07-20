@@ -27,6 +27,8 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
 
     private ?string $video = null;
 
+    private ?string $file = null;
+
     public function device(string $device): static
     {
         $this->device = $device;
@@ -69,6 +71,13 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
         return $this;
     }
 
+    public function file(string $file): static
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
     public function request(): PendingRequest
     {
         $username = config('whatsapp.username');
@@ -107,6 +116,17 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
                 'gif_playback' => $this->gifPlayback,
                 'duration' => $this->duration,
                 'is_forwarded' => $this->isForwarded,
+            ]);
+        }
+
+        if ($this->file) {
+            return $this->request()->post('/send/file', [
+                'phone' => $this->to,
+                'caption' => $this->message,
+                'reply_message_id' => $this->replyMessageId,
+                'file_url' => $this->resolveMediaUrl($this->file),
+                'is_forwarded' => $this->isForwarded,
+                'duration' => $this->duration,
             ]);
         }
 
@@ -230,7 +250,7 @@ class AldinokemalV8Whatsapp extends Whatsapp implements WhatsappDeviceInterface,
     {
         throw_unless($this->to, new Exception('Target must be set'));
 
-        throw_if(! $this->message && ! $this->image && ! $this->video, new Exception('Message or Image must be set'));
+        throw_if(! $this->message && ! $this->image && ! $this->video && ! $this->file, new Exception('Message or Image must be set'));
     }
 
     public function getMyGroups(): Collection
