@@ -147,3 +147,23 @@ describe('AldinokemalV8Whatsapp::send() image', function () {
         });
     });
 });
+
+describe('AldinokemalV8Whatsapp::send() text', function () {
+    it('posts to /send/message with the optional flags', function () {
+        Http::fake(['*' => Http::response(['status' => 200], 200)]);
+
+        (new AldinokemalV8Whatsapp)
+            ->to('6289685028129@s.whatsapp.net')
+            ->message('selamat malam')
+            ->duration(86400)
+            ->forwarded()
+            ->send();
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === 'https://gowa.example.com/send/message'
+                && $request['message'] === 'selamat malam'
+                && $request['duration'] === 86400
+                && $request['is_forwarded'] === true;
+        });
+    });
+});
