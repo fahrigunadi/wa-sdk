@@ -44,6 +44,22 @@ describe('driver base defaults', function () {
         (new WuzapiWhatsapp)->updateMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', 'edited text');
     })->throws(Exception::class, 'Not implemented');
 
+    it('throws not implemented for deleteMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->deleteMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for readMessage() on aldinokemal v1', function () {
+        (new AldinokemalWhatsapp)->readMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for deleteMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->deleteMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
+    it('throws not implemented for readMessage() on wuzapi', function () {
+        (new WuzapiWhatsapp)->readMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    })->throws(Exception::class, 'Not implemented');
+
     it('stores optional flags fluently without affecting drivers that do not read them', function () {
         $driver = (new AldinokemalWhatsapp)
             ->forwarded()

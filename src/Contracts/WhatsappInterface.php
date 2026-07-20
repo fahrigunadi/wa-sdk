@@ -121,6 +121,22 @@ interface WhatsappInterface
     public function updateMessage(string $messageId, string $phone, string $message): Response;
 
     /**
+     * Delete a previously sent message from the local chat view.
+     *
+     * @param  string  $messageId  The ID of the message to delete.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     */
+    public function deleteMessage(string $messageId, string $phone): Response;
+
+    /**
+     * Mark a message as read.
+     *
+     * @param  string  $messageId  The ID of the message to mark as read.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     */
+    public function readMessage(string $messageId, string $phone): Response;
+
+    /**
      * Prepare the HTTP client request instance.
      */
     public function request(): PendingRequest;

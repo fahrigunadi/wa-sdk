@@ -180,6 +180,38 @@ abstract class Whatsapp
     }
 
     /**
+     * Delete a previously sent message from the local chat view.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * message deletion override this.
+     *
+     * @param  string  $messageId  The ID of the message to delete.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function deleteMessage(string $messageId, string $phone): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * Mark a message as read.
+     *
+     * Not implemented by default; only drivers whose backend supports
+     * read receipts override this.
+     *
+     * @param  string  $messageId  The ID of the message to mark as read.
+     * @param  string  $phone  The chat (phone/group JID) the message was sent in.
+     *
+     * @throws Exception Always, unless overridden by a driver.
+     */
+    public function readMessage(string $messageId, string $phone): Response
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
      * Format the given phone number to WhatsApp standard (starts with 62).
      *
      * - Removes characters like spaces, dashes, parentheses, and plus sign.
