@@ -2,6 +2,10 @@
 
 All notable changes to `whatsapp` will be documented in this file.
 
+## v1.5.0 - 2026-07-21
+
+**Full Changelog**: https://github.com/fahrigunadi/wa-sdk/compare/v1.4.0...v1.5.0
+
 ## v1.4.0 - 2026-07-20
 
 **Full Changelog**: https://github.com/fahrigunadi/wa-sdk/compare/v1.3.0...v1.4.0
