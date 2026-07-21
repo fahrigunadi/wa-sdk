@@ -99,7 +99,7 @@ class WebhookRequest extends FormRequest
      *
      * @return string|null The URL to the image, or null if not present.
      */
-    public function image(): ?string
+    public function webhookImage(): ?string
     {
         return whatsapp()->webhookImage();
     }
