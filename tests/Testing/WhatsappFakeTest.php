@@ -89,3 +89,100 @@ it('assertNotSent() fails when a match exists', function () {
 it('assertNothingSent() passes when send() was never called', function () {
     (new WhatsappFake)->assertNothingSent();
 });
+
+it('records revokeMessage() and can be asserted with assertCalled()', function () {
+    $fake = new WhatsappFake;
+
+    $fake->revokeMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+
+    $fake->assertCalled('revokeMessage', fn (array $args) => $args['messageId'] === '3EB089B9D6ADD58153C561'
+        && $args['phone'] === '6289685028129@s.whatsapp.net');
+});
+
+it('records reactMessage() with the emoji', function () {
+    $fake = new WhatsappFake;
+
+    $fake->reactMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', '🙏');
+
+    $fake->assertCalled('reactMessage', fn (array $args) => $args['emoji'] === '🙏');
+});
+
+it('records updateMessage() with the new message text', function () {
+    $fake = new WhatsappFake;
+
+    $fake->updateMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', 'edited');
+
+    $fake->assertCalled('updateMessage', fn (array $args) => $args['message'] === 'edited');
+});
+
+it('records deleteMessage()', function () {
+    $fake = new WhatsappFake;
+
+    $fake->deleteMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+
+    $fake->assertCalled('deleteMessage');
+});
+
+it('records readMessage()', function () {
+    $fake = new WhatsappFake;
+
+    $fake->readMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+
+    $fake->assertCalled('readMessage');
+});
+
+it('records starMessage() and unstarMessage()', function () {
+    $fake = new WhatsappFake;
+
+    $fake->starMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    $fake->unstarMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+
+    $fake->assertCalled('starMessage');
+    $fake->assertCalled('unstarMessage');
+});
+
+it('records forwardMessage() with the optional fields', function () {
+    $fake = new WhatsappFake;
+
+    $fake->forwardMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', 86400, true);
+
+    $fake->assertCalled('forwardMessage', fn (array $args) => $args['duration'] === 86400 && $args['forceReupload'] === true);
+});
+
+it('records downloadMessage()', function () {
+    $fake = new WhatsappFake;
+
+    $fake->downloadMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+
+    $fake->assertCalled('downloadMessage');
+});
+
+it('message-manipulation methods return a genuine Response with no network call', function () {
+    $response = (new WhatsappFake)->revokeMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+
+    expect($response)->toBeInstanceOf(Response::class);
+    expect($response->successful())->toBeTrue();
+});
+
+it('assertNotCalled() passes when the method was never recorded', function () {
+    (new WhatsappFake)->assertNotCalled('revokeMessage');
+});
+
+it('assertNotCalled() fails when a matching call was recorded', function () {
+    $fake = new WhatsappFake;
+
+    $fake->revokeMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+
+    $fake->assertNotCalled('revokeMessage');
+})->throws(ExpectationFailedException::class);
+
+it('assertCalledCount() counts only the given method', function () {
+    $fake = new WhatsappFake;
+
+    $fake->revokeMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    $fake->revokeMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net');
+    $fake->reactMessage('3EB089B9D6ADD58153C561', '6289685028129@s.whatsapp.net', '🙏');
+
+    $fake->assertCalledCount('revokeMessage', 2);
+    $fake->assertCalledCount('reactMessage', 1);
+});

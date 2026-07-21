@@ -30,6 +30,8 @@ class WhatsappFake extends Whatsapp implements WhatsappInterface
 
     private array $sent = [];
 
+    private array $calls = [];
+
     public function to(string $phone): static
     {
         $this->to = $phone;
@@ -120,6 +122,109 @@ class WhatsappFake extends Whatsapp implements WhatsappInterface
     public function assertNothingSent(): void
     {
         PHPUnit::assertEmpty($this->sent, 'Messages were sent.');
+    }
+
+    public function revokeMessage(string $messageId, string $phone): Response
+    {
+        $this->recordCall('revokeMessage', compact('messageId', 'phone'));
+
+        return $this->fakeResponse();
+    }
+
+    public function reactMessage(string $messageId, string $phone, string $emoji): Response
+    {
+        $this->recordCall('reactMessage', compact('messageId', 'phone', 'emoji'));
+
+        return $this->fakeResponse();
+    }
+
+    public function updateMessage(string $messageId, string $phone, string $message): Response
+    {
+        $this->recordCall('updateMessage', compact('messageId', 'phone', 'message'));
+
+        return $this->fakeResponse();
+    }
+
+    public function deleteMessage(string $messageId, string $phone): Response
+    {
+        $this->recordCall('deleteMessage', compact('messageId', 'phone'));
+
+        return $this->fakeResponse();
+    }
+
+    public function readMessage(string $messageId, string $phone): Response
+    {
+        $this->recordCall('readMessage', compact('messageId', 'phone'));
+
+        return $this->fakeResponse();
+    }
+
+    public function starMessage(string $messageId, string $phone): Response
+    {
+        $this->recordCall('starMessage', compact('messageId', 'phone'));
+
+        return $this->fakeResponse();
+    }
+
+    public function unstarMessage(string $messageId, string $phone): Response
+    {
+        $this->recordCall('unstarMessage', compact('messageId', 'phone'));
+
+        return $this->fakeResponse();
+    }
+
+    public function forwardMessage(string $messageId, string $phone, ?int $duration = null, bool $forceReupload = false): Response
+    {
+        $this->recordCall('forwardMessage', compact('messageId', 'phone', 'duration', 'forceReupload'));
+
+        return $this->fakeResponse();
+    }
+
+    public function downloadMessage(string $messageId, string $phone): Response
+    {
+        $this->recordCall('downloadMessage', compact('messageId', 'phone'));
+
+        return $this->fakeResponse();
+    }
+
+    public function assertCalled(string $method, ?Closure $callback = null): void
+    {
+        PHPUnit::assertNotEmpty(
+            $this->matchingCalls($method, $callback),
+            "The expected [{$method}] call was not recorded."
+        );
+    }
+
+    public function assertNotCalled(string $method, ?Closure $callback = null): void
+    {
+        PHPUnit::assertEmpty(
+            $this->matchingCalls($method, $callback),
+            "A [{$method}] call matching the given criteria was recorded."
+        );
+    }
+
+    public function assertCalledCount(string $method, int $count): void
+    {
+        PHPUnit::assertCount(
+            $count,
+            array_filter($this->calls, fn (array $call) => $call['method'] === $method)
+        );
+    }
+
+    private function recordCall(string $method, array $arguments): void
+    {
+        $this->calls[] = ['method' => $method, 'arguments' => $arguments];
+    }
+
+    private function matchingCalls(string $method, ?Closure $callback): array
+    {
+        $matching = array_filter($this->calls, fn (array $call) => $call['method'] === $method);
+
+        if (! $callback) {
+            return $matching;
+        }
+
+        return array_filter($matching, fn (array $call) => $callback($call['arguments']));
     }
 
     private function matchingSent(?Closure $callback): array
