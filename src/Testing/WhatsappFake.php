@@ -238,6 +238,9 @@ class WhatsappFake extends Whatsapp implements WhatsappInterface
 
     private function fakeResponse(): Response
     {
+        // Illuminate\Support\Facades\Http::response() returns a
+        // GuzzleHttp\Promise\PromiseInterface, not a Response, so it can't
+        // be used here — build the PSR-7 response directly instead.
         $psr7Response = new Psr7Response(200, [], json_encode(['status' => 200, 'code' => 'SUCCESS']));
 
         return new Response($psr7Response);
