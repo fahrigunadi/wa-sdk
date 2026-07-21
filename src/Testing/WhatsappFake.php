@@ -32,6 +32,10 @@ class WhatsappFake extends Whatsapp implements WhatsappInterface
 
     private array $calls = [];
 
+    private array $webhookPayload = [];
+
+    private ?Collection $groups = null;
+
     public function to(string $phone): static
     {
         $this->to = $phone;
@@ -96,6 +100,20 @@ class WhatsappFake extends Whatsapp implements WhatsappInterface
         ];
 
         return $this->fakeResponse();
+    }
+
+    public function givenWebhook(array $payload): static
+    {
+        $this->webhookPayload = array_merge($this->webhookPayload, $payload);
+
+        return $this;
+    }
+
+    public function withGroups(iterable $groups): static
+    {
+        $this->groups = collect($groups);
+
+        return $this;
     }
 
     public function assertSent(?Closure $callback = null): void
@@ -248,71 +266,71 @@ class WhatsappFake extends Whatsapp implements WhatsappInterface
 
     public function webhookSender(): string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['sender'] ?? '';
     }
 
     public function webhookChat(): string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['chat'] ?? '';
     }
 
     public function webhookMessageText(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['message_text'] ?? null;
     }
 
     public function webhookMessageId(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['message_id'] ?? null;
     }
 
     public function webhookMessageTimestamp(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['message_timestamp'] ?? null;
     }
 
     public function webhookPushname(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['pushname'] ?? null;
     }
 
     public function webhookIsGroup(): bool
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['is_group'] ?? false;
     }
 
     public function webhookIsImage(): bool
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['is_image'] ?? false;
     }
 
     public function webhookImageMimeType(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['image_mime_type'] ?? null;
     }
 
     public function webhookImage(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['image'] ?? null;
     }
 
     public function webhookIsDocument(): bool
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['is_document'] ?? false;
     }
 
     public function webhookDocumentMimeType(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['document_mime_type'] ?? null;
     }
 
     public function webhookDocument(): ?string
     {
-        throw new Exception('Not implemented');
+        return $this->webhookPayload['document'] ?? null;
     }
 
     public function getMyGroups(): Collection
     {
-        throw new Exception('Not implemented');
+        return $this->groups ?? collect();
     }
 }
